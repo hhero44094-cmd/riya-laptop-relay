@@ -1,0 +1,24 @@
+# Render free-tier deployment for the Riya Laptop Assistant relay.
+# How to use (5 minutes, free):
+#   1. Put the whole `relay/` folder in a GitHub repo (or use Render's
+#      "Public Git repository" with the relay folder as root).
+#   2. Render dashboard -> New -> Web Service -> pick the repo.
+#   3. Render reads this file automatically: start command `node server.js`,
+#      free plan. It sets PORT itself; server.js uses process.env.PORT.
+#   4. Deploy. Your relay URL will be like:
+#        wss://riya-relay-xxxx.onrender.com
+#      (use wss://, not ws://, and NO port number — Render handles it.)
+#   5. Paste that URL in the laptop app's Relay URL field, Save & Connect.
+# Free-tier note: Render free sleeps after inactivity — first connect
+# after a while can take ~30-60 seconds to wake up. That is normal.
+services:
+  - type: web
+    name: riya-laptop-relay
+    env: node
+    plan: free
+    buildCommand: echo "no build step - zero dependencies"
+    startCommand: node server.js
+    healthCheckPath: /health
+    envVars:
+      - key: RELAY_PORT
+        value: 18778
